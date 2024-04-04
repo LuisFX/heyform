@@ -79,3 +79,9 @@ You'll find a lot of resources to help you get started with HeyForm in the [help
 ## License
 
 HeyForm is open-source under the GNU Affero General Public License v3.0 (AGPL-3.0), you will find more information about the license and how to comply with it [here](https://docs.heyform.net/license).
+
+podman pull docker.io/mongo
+podman run -dt --name heyform -p 27017:27017 -v '/home/luisfx/data:/data/db:Z' docker.io/library/mongo:latest
+
+podman pull docker.io/redis
+podman run -d --name redis_server -p 6379:6379 redis

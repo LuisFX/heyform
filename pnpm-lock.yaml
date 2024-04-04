@@ -185,6 +185,9 @@ importers:
       tsconfig-paths:
         specifier: 3.9.0
         version: 3.9.0
+      typescript:
+        specifier: 4.9.5
+        version: 4.9.5
       which-browser:
         specifier: 0.5.1
         version: 0.5.1
@@ -258,9 +261,6 @@ importers:
       ts-loader:
         specifier: 8.0.3
         version: 8.0.3(typescript@4.9.5)
-      typescript:
-        specifier: 4.9.5
-        version: 4.9.5
 
   packages/webapp:
     dependencies:
@@ -11770,6 +11770,7 @@ packages:
 
   /remove-trailing-separator@1.1.0:
     resolution: {integrity: sha512-/hS+Y0u3aOfIETiaiirUFwDBDzmXPvO+jAfKTitUngIPzdKc6Z0LoFjM/CK5PL4C+eKwHohlHAb6H0VFfmmUsw==}
+    requiresBuild: true
 
   /repeat-element@1.1.4:
     resolution: {integrity: sha512-LFiNfRcSu7KK3evMyYOuCzv3L10TW7yC1G2/+StMjK8Y6Vqd2MG7r/Qjw4ghtuCOjFvlnms/iMmLqpvW/ES/WQ==}

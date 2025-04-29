@@ -15,6 +15,7 @@ import {
   FormKindEnum,
   FormSettings,
   FormStatusEnum,
+  HiddenField,
   InteractiveModeEnum,
   Layout,
   Logic,
@@ -26,7 +27,7 @@ import {
   Variable
 } from '@heyform-inc/shared-types-enums'
 
-import { IntegrationStatusEnum } from '@model'
+import { FormModel, IntegrationStatusEnum } from '@model'
 
 @InputType()
 class ChoiceInput {
@@ -374,6 +375,10 @@ export class UpdateFormInput extends FormDetailInput {
   @IsOptional()
   requirePassword?: boolean
 
+  @Field(type => [String], { nullable: true })
+  @IsOptional()
+  languages?: string[]
+
   @Field({ nullable: true })
   @IsOptional()
   @IsUrl()
@@ -408,6 +413,10 @@ export class UpdateFormInput extends FormDetailInput {
   @Field({ nullable: true })
   @IsOptional()
   enableProgress?: boolean
+
+  @Field({ nullable: true })
+  @IsOptional()
+  enableQuestionList?: boolean
 
   @Field({ nullable: true })
   @IsOptional()
@@ -544,6 +553,21 @@ export class DeleteFormFieldInput extends FormDetailInput {
 export class UpdateFormFieldInput extends DeleteFormFieldInput {
   @Field(type => SharedFormFieldInput)
   updates: Record<string, any>
+}
+
+@InputType()
+export class DeleteHiddenFieldInput {
+  @Field()
+  formId: string
+
+  @Field()
+  fieldId: string
+}
+
+@InputType()
+export class CreateHiddenFieldInput extends DeleteHiddenFieldInput {
+  @Field()
+  fieldName: string
 }
 
 @InputType()
@@ -758,7 +782,13 @@ export class FormSettingType {
   enableProgress?: boolean
 
   @Field({ nullable: true })
+  enableQuestionList?: boolean
+
+  @Field({ nullable: true })
   locale?: string
+
+  @Field(type => [String], { nullable: true, defaultValue: [] })
+  languages?: string[]
 
   @Field({ nullable: true })
   enableClosedMessage?: boolean
@@ -814,6 +844,15 @@ export class FormFieldType {
 }
 
 @ObjectType()
+export class HiddenFieldType {
+  @Field()
+  id: string
+
+  @Field()
+  name: string
+}
+
+@ObjectType()
 export class PageBackgroundType {
   @Field({ nullable: true })
   backgroundPosition?: string
@@ -824,18 +863,6 @@ export class PageBackgroundType {
   @Field({ nullable: true })
   backgroundImage?: string
 }
-
-// @ObjectType()
-// export class ThankYouType {
-//   @Field({ nullable: true })
-//   icon?: string
-//
-//   @Field(type => GraphQLJSON, { nullable: true })
-//   titleSchema?: any[]
-//
-//   @Field(type => GraphQLJSON, { nullable: true })
-//   bodySchema?: any[]
-// }
 
 @ObjectType()
 class StripeAccountType {
@@ -878,6 +905,9 @@ export class FormType {
   @Field(type => [FormFieldType], { nullable: true })
   fields?: FormField[]
 
+  @Field(type => [HiddenFieldType], { nullable: true })
+  hiddenFields?: HiddenField[]
+
   @Field(type => [GraphQLJSONObject], { nullable: true })
   logics?: Logic[]
 
@@ -916,6 +946,9 @@ export class FormType {
 @ObjectType()
 export class PublicFormType extends FormType {
   @Field(type => GraphQLJSONObject, { nullable: true })
+  translations: FormModel['translations']
+
+  @Field(type => GraphQLJSONObject, { nullable: true })
   integrations?: Record<string, string>
 }
 
@@ -950,28 +983,7 @@ export class FormAnalyticType {
 
   @Field()
   averageTime: number
-
-  @Field()
-  createdAt: Date
-
-  @Field()
-  updatedAt: Date
 }
-
-// @ObjectType()
-// class FormReportChoosesType {
-//   @Field()
-//   id: string
-//
-//   @Field()
-//   label: string
-//
-//   @Field({ nullable: true })
-//   image?: string
-//
-//   @Field()
-//   count: number
-// }
 
 @ObjectType()
 export class FormReportResponseType {

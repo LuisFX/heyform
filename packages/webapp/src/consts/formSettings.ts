@@ -9,18 +9,18 @@ export const CAPTCHA_KIND_OPTIONS = [
   { label: 'GeeTest CAPTCHA', value: CaptchaKindEnum.GEETEST_CAPTCHA }
 ]
 
-export const FORM_LOCALES_OPTIONS = [
+export const LOCALES_OPTIONS = [
   {
     label: 'English',
     value: 'en'
   },
   {
-    label: 'Deutsch',
-    value: 'de'
+    label: 'Polski',
+    value: 'pl'
   },
   {
-    label: 'Français',
-    value: 'fr'
+    label: 'Türkçe',
+    value: 'tr'
   },
   {
     label: '简体中文',
@@ -28,6 +28,37 @@ export const FORM_LOCALES_OPTIONS = [
   },
   {
     label: '繁体中文',
+    value: 'zh-tw'
+  }
+]
+
+export const FORM_LOCALES_OPTIONS = [
+  {
+    label: 'English',
+    value: 'en'
+  },
+  {
+    label: 'German',
+    value: 'de'
+  },
+  {
+    label: 'French',
+    value: 'fr'
+  },
+  {
+    label: 'Polish',
+    value: 'pl'
+  },
+  {
+    label: 'Turkish',
+    value: 'tr'
+  },
+  {
+    label: 'Chinese (simplified)',
+    value: 'zh-cn'
+  },
+  {
+    label: 'Chinese (traditional)',
     value: 'zh-tw'
   }
 ]

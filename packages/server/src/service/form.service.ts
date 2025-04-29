@@ -7,7 +7,9 @@ import { helper, pickObject, timestamp } from '@heyform-inc/utils'
 
 import { STRIPE_PUBLISHABLE_KEY } from '@environments'
 import { FormModel } from '@model'
-import { getUpdateQuery } from '@utils'
+import { getUpdateQuery, mapToObject } from '@utils'
+import { InjectQueue } from '@nestjs/bull'
+import { Queue } from 'bull'
 
 interface UpdateFiledOptions {
   formId: string
@@ -19,7 +21,9 @@ interface UpdateFiledOptions {
 export class FormService {
   constructor(
     @InjectModel(FormModel.name)
-    private readonly formModel: Model<FormModel>
+    private readonly formModel: Model<FormModel>,
+    @InjectQueue('TranslateFormQueue')
+    private readonly translateFormQueue: Queue
   ) {}
 
   async findById(id: string): Promise<FormModel | null> {
@@ -140,10 +144,15 @@ export class FormService {
     return result.id
   }
 
-  public async update(formId: string, updates: Record<string, any>): Promise<boolean> {
+  public async update(
+    formId: string,
+    updates: Record<string, any>,
+    conditions?: Record<string, any>
+  ): Promise<boolean> {
     const result = await this.formModel.updateOne(
       {
-        _id: formId
+        _id: formId,
+        ...conditions
       },
       updates
     )
@@ -230,6 +239,7 @@ export class FormService {
         id: formId,
         name: form?.name,
         fields: [],
+        hiddenFields: [],
         settings: {
           active: false,
           ...pickObject(form?.settings || {}, [
@@ -252,6 +262,7 @@ export class FormService {
         id: formId,
         name: form?.name,
         fields: [],
+        hiddenFields: [],
         logics: [],
         variables: [],
         settings: {
@@ -272,6 +283,7 @@ export class FormService {
       'nameSchema',
       'interactiveMode',
       'kind',
+      'hiddenFields',
       'logics',
       'variables',
       'themeSettings'
@@ -285,13 +297,16 @@ export class FormService {
       'captchaKind',
       'requirePassword',
       'enableProgress',
+      'enableQuestionList',
       'locale',
+      'languages',
       'enableClosedMessage',
       'closedFormTitle',
       'closedFormDescription'
     ])
 
     masked.fields = form.fields
+    masked.translations = mapToObject(form.translations)
 
     if (helper.isValid(form.stripeAccount?.accountId)) {
       masked.stripe = {
@@ -301,5 +316,14 @@ export class FormService {
     }
 
     return masked
+  }
+
+  public addTranslateQueue(formId: string, languages: string[]) {
+    languages.forEach(language => {
+      this.translateFormQueue.add({
+        formId,
+        language
+      })
+    })
   }
 }

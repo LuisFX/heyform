@@ -5,8 +5,8 @@ import { helper } from '@heyform-inc/utils'
 import { type FC, useEffect, useMemo, useReducer, useState } from 'react'
 
 import { Async } from '@/components'
-import { IFormField } from '@/components/formComponents/typings'
 import { Spin, notification } from '@/components/ui'
+import { IFormField } from '@/pages/form/views/FormComponents/typings'
 import { FormService } from '@/service'
 import { useStore } from '@/store'
 import { useParam } from '@/utils'
@@ -33,6 +33,7 @@ const FormBuilder: FC<{ form: FormModel }> = ({ form }) => {
     activeTabName: 'question',
     variables: form.variables,
     locale: form.settings?.locale || 'en',
+    hiddenFields: form.hiddenFields || [],
     ...initFields(form.fields, form.logics)
   }
   const [state, dispatch] = useReducer(storeReducer, initialState)

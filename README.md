@@ -8,6 +8,10 @@
   <a target="_blank" href="https://heyform.net">Website</a> | <a target="_blank" href="https://docs.heyform.net">Documentation</a> | <a target="_blank" href="https://heyform.net/blog">Blog</a> | <a target="_blank" href="https://twitter.com/HeyformHQ">Twitter</a>
 </p>
 
+<p align="center">
+<a href="https://trendshift.io/repositories/9025" target="_blank"><img src="https://trendshift.io/api/badge/repositories/9025" alt="heyform" style="width: 250px; height: 55px;" width="250" height="55"/></a>
+</p>
+
 <img src="./assets/images/screenshot.png" alt="HeyForm" />
 
 ## Features
@@ -42,6 +46,7 @@ Choosing our hosted version not only saves a significant amount of time and reso
 .
 └── packages
     ├── answer-utils       (form submission utils for server and webapp)
+    ├── embed              (form embed javascript library)
     ├── shared-types-enums (shared types/enums for server and webapp)
     ├── utils              (common utils for server and webapp)
     ├── server             (node server)
@@ -50,7 +55,7 @@ Choosing our hosted version not only saves a significant amount of time and reso
 
 ## Self-hosting
 
-Interested in self-hosting HeyForm on your server? Take a look at the [self-hosting installation instructions](https://docs.heyform.net/self-hosting).
+Interested in self-hosting HeyForm on your server? Take a look at the [self-hosting installation instructions](https://docs.heyform.net/open-source/self-hosting).
 
 ### One Click Deployment
 
@@ -62,12 +67,24 @@ Interested in self-hosting HeyForm on your server? Take a look at the [self-host
 	<img src="https://zeabur.com/button.svg" alt="Deploy on Zeabur" />
 </a>
 
+<a href="https://cloud.sealos.io/?openapp=system-template%3FtemplateName%3Dheyform" style="margin-left:16px">
+	<img src="https://cdn.jsdelivr.net/gh/labring-actions/templates@main/Deploy-on-Sealos.svg" alt="Deploy on Sealos" height="36" />
+</a>
+
+<a href="https://repocloud.io/details/?app_id=283" style="margin-left:24px">
+	<img src="https://d16t0pc4846x52.cloudfront.net/deploylobe.svg" alt="Deploy to RepoCloud" height="36" />
+</a>
+
+<a href="https://computenest.console.aliyun.com/service/instance/create/cn-hangzhou?type=user&ServiceId=service-a47e56f0ea9f460d8d33" style="margin-left:24px">
+	<img src="https://service-info-public.oss-cn-hangzhou.aliyuncs.com/computenest-en.svg" alt="Deploy on Alibaba Cloud" height="36" />
+</a>
+
 ## Local development
 
-Follow the [local installation instructions](https://docs.heyform.net/local-development) to run the project locally.
+Follow the [local installation instructions](https://docs.heyform.net/open-source/local-development) to run the project locally.
 
 ## How to Contribute
-You are awesome, let's build great software together. Head over to the [contribute docs](https://docs.heyform.net/contribute) to get started. 💪
+You are awesome, let's build great software together. Head over to the [contribute docs](https://docs.heyform.net/open-source/contribute) to get started. 💪
 
 ## Support & Community
 
@@ -79,6 +96,13 @@ You'll find a lot of resources to help you get started with HeyForm in the [help
 ## License
 
 HeyForm is open-source under the GNU Affero General Public License v3.0 (AGPL-3.0), you will find more information about the license and how to comply with it [here](https://docs.heyform.net/license).
+
+podman pull docker.io/mongo
+podman run -dt --name heyform -p 27017:27017 -v '/home/luisfx/data:/data/db:Z' docker.io/library/mongo:latest
+
+podman pull docker.io/redis
+podman run -d --name redis_server -p 6379:6379 redis
+HeyForm is open-source under the GNU Affero General Public License v3.0 (AGPL-3.0), you will find more information about the license and how to comply with it [here](https://docs.heyform.net/open-source/license).
 
 podman pull docker.io/mongo
 podman run -dt --name heyform -p 27017:27017 -v '/home/luisfx/data:/data/db:Z' docker.io/library/mongo:latest

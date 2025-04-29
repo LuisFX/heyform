@@ -2,8 +2,8 @@ import { CaptchaKindEnum, FormModel } from '@heyform-inc/shared-types-enums'
 import { helper } from '@heyform-inc/utils'
 import { FC, useEffect, useRef } from 'react'
 
-import { getTheme, getThemeStyle, getWebFontURL } from '@/components/formComponents'
 import { GOOGLE_RECAPTCHA_KEY } from '@/consts'
+import { getTheme, getThemeStyle, getWebFontURL } from '@/pages/form/views/FormComponents'
 
 import { isStripeEnabled } from './utils/payment'
 
@@ -71,7 +71,7 @@ const FacebookPixel: FC<{ trackCode: string }> = ({ trackCode }) => {
   )
 }
 
-export const CustomCode = ({ form }: { form: FormModel }) => {
+export const CustomCode = ({ form, query }: { form: FormModel; query: Record<string, any> }) => {
   const { integrations } = form
   const theme = getTheme(form.themeSettings?.theme)
   const fontURL = getWebFontURL(theme.fontFamily)
@@ -83,7 +83,7 @@ export const CustomCode = ({ form }: { form: FormModel }) => {
   return (
     <>
       <link href={fontURL} rel="stylesheet" />
-      <style dangerouslySetInnerHTML={{ __html: getThemeStyle(theme) }} />
+      <style dangerouslySetInnerHTML={{ __html: getThemeStyle(theme, query) }} />
       {helper.isValid(form.themeSettings?.theme?.customCSS) && (
         <style dangerouslySetInnerHTML={{ __html: form.themeSettings!.theme!.customCSS! }} />
       )}

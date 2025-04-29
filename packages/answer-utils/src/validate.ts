@@ -1,5 +1,5 @@
 import { fieldsToValidateRules, FieldsToValidateRules } from './fields-to-validate-rules'
-import { isDate, isEmail, isMobilePhone, isNumeric, isURL } from './helper'
+import { isDate, isMobilePhone } from './helper'
 import { AnswerValue, FieldKindEnum, FormField } from '@heyform-inc/shared-types-enums'
 import { helper } from '@heyform-inc/utils'
 import dayjs from 'dayjs'
@@ -160,7 +160,7 @@ function validateText(rule: FieldsToValidateRules, value: AnswerValue) {
 }
 
 function validateNumber(rule: FieldsToValidateRules, value: AnswerValue) {
-  if (!isNumeric(String(value))) {
+  if (!helper.isNumeric(String(value))) {
     throw new ValidateError({
       id: rule.id,
       kind: rule.kind,
@@ -200,7 +200,7 @@ function validateEmail(rule: FieldsToValidateRules, value: AnswerValue) {
     })
   }
 
-  if (!isEmail(value)) {
+  if (!helper.isEmail(value)) {
     throw new ValidateError({
       id: rule.id,
       kind: rule.kind,
@@ -220,7 +220,7 @@ function validateUrl(rule: FieldsToValidateRules, value: AnswerValue) {
     })
   }
 
-  if (!isURL(value)) {
+  if (!helper.isURL(value)) {
     throw new ValidateError({
       id: rule.id,
       kind: rule.kind,
@@ -250,7 +250,15 @@ function validateMultipleChoice(rule: FieldsToValidateRules, value: AnswerValue)
     return
   }
 
-  if (!helper.isArray(value.value)) {
+  if (!helper.isValidArray(value.value)) {
+    if (!helper.isObject(value)) {
+      value = {}
+    }
+
+    value.value = []
+  }
+
+  if (value.value.length < 1 && helper.isEmpty(value?.other)) {
     throw new ValidateError({
       id: rule.id,
       kind: rule.kind,
@@ -262,7 +270,7 @@ function validateMultipleChoice(rule: FieldsToValidateRules, value: AnswerValue)
   let isOtherExists = false
 
   if (!rule.allowOther) {
-    if (helper.isValid(value.other)) {
+    if (helper.isValid(value?.other)) {
       throw new ValidateError({
         id: rule.id,
         kind: rule.kind,
@@ -271,7 +279,7 @@ function validateMultipleChoice(rule: FieldsToValidateRules, value: AnswerValue)
       })
     }
   } else {
-    if (!(helper.isNil(value.other) || (isOtherExists = helper.isValid(value.other)))) {
+    if (!(helper.isNil(value?.other) || (isOtherExists = helper.isValid(value?.other)))) {
       throw new ValidateError({
         id: rule.id,
         kind: rule.kind,
@@ -281,8 +289,10 @@ function validateMultipleChoice(rule: FieldsToValidateRules, value: AnswerValue)
     }
   }
 
+  const count = value.value.length + (isOtherExists ? 1 : 0)
+
   if (!rule.allowMultiple) {
-    if (value.value.length > 1) {
+    if (count > 1) {
       throw new ValidateError({
         id: rule.id,
         kind: rule.kind,
@@ -303,7 +313,6 @@ function validateMultipleChoice(rule: FieldsToValidateRules, value: AnswerValue)
     }
   }
 
-  const count = value.value.length + (isOtherExists ? 1 : 0)
   const result =
     validateInt(count, rule.min, rule.max) &&
     value.value.filter((row: string) => !rule.choices!.includes(row)).length < 1

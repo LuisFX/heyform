@@ -1,4 +1,4 @@
-import { BadRequestException, Headers, UseGuards } from '@nestjs/common'
+import { BadRequestException, UseGuards } from '@nestjs/common'
 import { Args, Mutation, Resolver } from '@nestjs/graphql'
 
 import { applyLogicToFields, fieldValuesToAnswers, flattenFields } from '@heyform-inc/answer-utils'
@@ -16,7 +16,6 @@ import { CompleteSubmissionInput, CompleteSubmissionType } from '@graphql'
 import { EndpointAnonymousIdGuard } from '@guard'
 import {
   EndpointService,
-  FormAnalyticService,
   FormReportService,
   FormService,
   IntegrationService,
@@ -35,7 +34,6 @@ export class CompleteSubmissionResolver {
     private readonly formService: FormService,
     private readonly submissionService: SubmissionService,
     private readonly submissionIpLimitService: SubmissionIpLimitService,
-    private readonly formAnalyticService: FormAnalyticService,
     private readonly formReportService: FormReportService,
     private readonly integrationService: IntegrationService,
     private readonly paymentService: PaymentService
@@ -43,7 +41,6 @@ export class CompleteSubmissionResolver {
 
   @Mutation(returns => CompleteSubmissionType)
   async completeSubmission(
-    @Headers('x-anonymous-id') anonymousId: string,
     @GqlClient() client: ClientInfo,
     @Args('input') input: CompleteSubmissionInput
   ): Promise<CompleteSubmissionType> {
@@ -154,6 +151,7 @@ export class CompleteSubmissionResolver {
       category,
       title: form.name,
       answers,
+      hiddenFields: input.hiddenFields,
       variables,
       startAt,
       endAt,
@@ -185,10 +183,6 @@ export class CompleteSubmissionResolver {
         }
       })
     }
-
-    // Update analytic
-    const duration = endAt - startAt
-    this.formAnalyticService.updateCountAndAverageTime(form.id, duration)
 
     // Form report Queue
     this.formReportService.addQueue(form.id)

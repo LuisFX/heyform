@@ -1,4 +1,5 @@
-import qs from '../src/qs'
+import { test, expect } from 'vitest'
+import { qs } from '../src'
 
 const obj = {
   a: [1, 2, 3],
@@ -7,7 +8,7 @@ const obj = {
   d: undefined
 }
 
-const str = 'a=1,2,3&b=hello&c=true&d='
+const str = 'a%5B0%5D=1&a%5B1%5D=2&a%5B2%5D=3&b=hello&c=true'
 
 test('stringify object', () => {
   expect(qs.stringify(obj)).toBe(str)
@@ -15,10 +16,9 @@ test('stringify object', () => {
 
 test('parse string', () => {
   expect(qs.parse(str)).toStrictEqual({
-    a: '1,2,3',
+    a: ['1', '2', '3'],
     b: 'hello',
-    c: 'true',
-    d: ''
+    c: 'true'
   })
 })
 

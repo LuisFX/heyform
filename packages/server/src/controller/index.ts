@@ -1,4 +1,11 @@
 /**
+ * Health
+ *
+ * /health
+ */
+export * from './health.controller'
+
+/**
  * App connect
  *
  * /connect/stripe/callback
@@ -30,6 +37,13 @@ export * from './export-submissions.controller'
  */
 export * from './image.controller'
 export * from './upload.controller'
+
+/**
+ * Form
+ *
+ * /form/* (must be put before dashboard controller)
+ */
+export * from './form.controller'
 
 /**
  * The dashboard controller must be put at the end,

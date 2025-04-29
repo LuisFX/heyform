@@ -5,11 +5,11 @@ import clsx from 'clsx'
 import { type FC, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import { flattenFieldsWithGroups } from '@/components/formComponents'
 import { Button, Input, Select } from '@/components/ui'
 import { type FormField } from '@/models'
 import { useStoreContext } from '@/pages/form/Create/store'
 import { KIND_OPTIONS, OPERATOR_OPTIONS } from '@/pages/form/Create/views/FieldConfig'
+import { flattenFieldsWithGroups } from '@/pages/form/views/FormComponents'
 
 import { FieldSelect } from './FieldSelect'
 
@@ -132,19 +132,19 @@ export const Action: FC<ActionProps> = ({
             labelKey="name"
             valueKey="id"
             value={value.variable}
-            placeholder="Variable"
+            placeholder={t('formBuilder.variable.variable')}
             onChange={handleVariableChange}
           />
           <Select
             className="w-auto flex-1"
             options={OPERATOR_OPTIONS}
             value={value.operator}
-            placeholder="Operator"
+            placeholder={t('formBuilder.operator')}
             onChange={handleOperatorChange}
           />
           <Input
             type={htmlType}
-            placeholder="Value"
+            placeholder={t('formBuilder.value')}
             className="flex-1"
             value={value.value}
             onChange={handleInputChange}

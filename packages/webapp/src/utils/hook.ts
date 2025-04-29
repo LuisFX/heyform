@@ -34,7 +34,8 @@ export function useQuery(options?: IMapType): IMapType {
   return useMemo(() => {
     const value = qs.parse(location.search, {
       decode: true,
-      separator: ','
+      separator: ',',
+      ignoreQueryPrefix: true
     })
 
     if (options) {
@@ -280,6 +281,31 @@ export function useWindow(
 
     return () => {
       window.removeEventListener('message', messageListener)
+    }
+  }, [])
+}
+
+export function useKey(key: string, callback: (event: KeyboardEvent) => void) {
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === key) {
+        const isIgnoredElement = (event.target as any)?.matches(
+          'input, [contenteditable="true"], [contenteditable="true"] *'
+        )
+
+        if (!isIgnoredElement) {
+          callback(event)
+        }
+      }
+    },
+    [key, callback]
+  )
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
     }
   }, [])
 }

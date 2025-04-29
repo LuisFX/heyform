@@ -2,6 +2,7 @@ import type {
   ActionEnum,
   CalculateEnum,
   CaptchaKindEnum,
+  ChoiceBadgeEnum,
   ComparisonEnum,
   FieldKindEnum,
   FieldLayoutAlignEnum,
@@ -27,13 +28,27 @@ export interface FormSettings {
   // Move to "Thank You" settings
   redirectUrl?: string
   redirectOnCompletion?: boolean
+  customDomain?: string
+  removeBranding?: boolean
   enableQuotaLimit?: boolean
   quotaLimit?: number
   enableIpLimit?: boolean
   ipLimitCount?: number
   ipLimitTime?: number
   enableProgress?: boolean
+
+  // Translation
   locale?: string
+  languages?: string[]
+
+  // Question navigation
+  enableQuestionList?: boolean
+  enableNavigationArrows?: boolean
+
+  // Metadata
+  metaTitle?: string
+  metaDescription?: string
+  metaOGImageUrl?: string
 
   // Custom closed form message
   enableClosedMessage?: boolean
@@ -97,6 +112,8 @@ export interface Property {
   choices?: Choice[]
   randomize?: boolean
   other?: string
+  badge?: ChoiceBadgeEnum // default is ChoiceBadgeEnum.LETTER
+  verticalAlignment?: boolean
 
   // Only for group
   fields?: FormField[]
@@ -144,6 +161,7 @@ export interface Property {
   buttonLinkUrl?: string
   redirectUrl?: string
   redirectOnCompletion?: boolean
+  redirectDelay?: number
 }
 
 export interface Validation {
@@ -179,6 +197,11 @@ export interface FormField {
   hide?: boolean
 }
 
+export interface HiddenField {
+  id: string
+  name: string
+}
+
 export interface FormTheme {
   fontFamily?: string
   screenFontSize?: 'small' | 'normal' | 'large'
@@ -197,7 +220,7 @@ export interface FormTheme {
 }
 
 export interface ThemeSettings {
-  themeId?: string
+  logo?: string
   theme?: FormTheme
 }
 
@@ -216,8 +239,10 @@ export interface FormModel {
   kind: FormKindEnum
   settings?: FormSettings
   fields?: FormField[]
+  hiddenFields?: HiddenField[]
   fieldUpdateAt?: number
   logics?: Logic[]
+  translations?: Record<string, Record<string, any>>
   variables?: Variable[]
   columns?: FormField[]
   stripeAccount?: StripeAccount
@@ -231,6 +256,7 @@ export interface FormModel {
     googleanalytics: string
     facebookpixel: string
   }
+  updatedAt: number
 }
 
 export interface ChoiceValue {
@@ -242,6 +268,7 @@ export interface FileUploadValue {
   filename: string
   key: string
   urlPrefix: string
+  url: string
   size: number
 }
 
@@ -302,11 +329,10 @@ export interface StringVariable {
   name: string
   kind: 'string'
   value: string
+  logics: LogicPayload[]
 }
 
-export interface NumberVariable {
-  id: string
-  name: string
+export interface NumberVariable extends Omit<StringVariable, 'kind' | 'value'> {
   kind: 'number'
   value: number
 }

@@ -2,8 +2,8 @@ import { FormTheme } from '@heyform-inc/shared-types-enums'
 import { helper, qs, removeObjectNil } from '@heyform-inc/utils'
 import isMobilePhone from 'validator/lib/isMobilePhone'
 
-import { getTheme, getThemeStyle } from '@/components/formComponents'
 import { STRIPE_PUBLISHABLE_KEY } from '@/consts'
+import { getTheme, getThemeStyle } from '@/pages/form/views/FormComponents'
 
 export function urlBuilder(prefix: string, query: Record<string, any>): string {
   return prefix + '?' + qs.stringify(removeObjectNil(query), { encode: true })
@@ -137,4 +137,28 @@ export function insertThemeStyle(customTheme?: FormTheme) {
   }
 
   style.innerHTML = content
+}
+
+export function getFileUploadValue(v: any) {
+  if (helper.isObject(v) && helper.isURL(v.url)) {
+    return {
+      filename: v.filename,
+      url: urlBuilder(v.url, {
+        attname: v.filename
+      })
+    }
+  } else if (helper.isString(v) && helper.isURL(v)) {
+    return {
+      filename: 'Attachment',
+      url: urlBuilder(v, {
+        attname: 'Attachment'
+      })
+    }
+  }
+}
+
+export function getUrlValue(v: any) {
+  if (helper.isURL(v)) {
+    return v
+  }
 }

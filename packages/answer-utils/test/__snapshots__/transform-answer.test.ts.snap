@@ -1,32 +1,38 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`should convert value to api object 1`] = `
-Object {
+{
   "(ID: EF9tbsJj3CNZ) 🐶 Choose the dog ": "Choice 3",
   "(ID: MVlZfnmjZlye) 👋 Just choose one": "🍍 Pineapple",
+  "(ID: NqCpSqCpteiO) You sig here": " (https://heyform.net/sig.jpg)",
   "(ID: NteSqF9g5cOa6) Input table": "Ivan, 16
 Jack Smith, 24",
+  "(ID: Svky0NLxkN7u) 🎉 Single Choose with other": "Other answer",
   "(ID: X9F47wrnJImk) 👍 Do you agree with us ": "No",
   "(ID: bcFvi1syrp66) ☎️  Your MobilePhone ": "+12015551023",
   "(ID: g6Oayu81jkdqcte) Full name": "Ivan Woods",
   "(ID: qCpteNRi2SiO) 🈴️ Upload you avatar ": "avatar.jpg (https://heyformhq.com/qCpteNRi2SiO_avatar.jpg)",
   "(ID: qFN5cteg6SOa) 🪐 Rate here ": 5,
+  "(ID: u1NyLxkSvkN7) ✈ Multiple Choose with other": "Choice 2, Other answer",
   "(ID: vyLu2NkN70xkS) Group Multiple Choose ": "Group Choice 1, Group Choice 2",
   "(ID: yLxkSvkN7u2N) 🧱 Multiple Choose ": "Choice 2",
 }
 `;
 
 exports[`should convert value to flat json 1`] = `
-Object {
+{
   "EF9tbsJj3CNZ": "Choice 3",
   "MVlZfnmjZlye": "🍍 Pineapple",
+  "NqCpSqCpteiO": " (https://heyform.net/sig.jpg)",
   "NteSqF9g5cOa6": "Ivan, 16
 Jack Smith, 24",
+  "Svky0NLxkN7u": "Other answer",
   "X9F47wrnJImk": "No",
   "bcFvi1syrp66": "+12015551023",
   "g6Oayu81jkdqcte": "Ivan Woods",
   "qCpteNRi2SiO": "avatar.jpg (https://heyformhq.com/qCpteNRi2SiO_avatar.jpg)",
   "qFN5cteg6SOa": 5,
+  "u1NyLxkSvkN7": "Choice 2, Other answer",
   "vyLu2NkN70xkS": "Group Choice 1, Group Choice 2",
   "yLxkSvkN7u2N": "Choice 2",
 }
@@ -70,6 +76,11 @@ exports[`should convert value to html 1`] = `
 </li>
 
 <li>
+  <h3>You sig here</h3>
+  <p> (https://heyform.net/sig.jpg)</p>
+</li>
+
+<li>
   <h3>🪐 Rate here </h3>
   <p>5</p>
 </li>
@@ -84,34 +95,50 @@ exports[`should convert value to html 1`] = `
   <p>Ivan, 16
 Jack Smith, 24</p>
 </li>
+
+<li>
+  <h3>✈ Multiple Choose with other</h3>
+  <p>Choice 2, Other answer</p>
+</li>
+
+<li>
+  <h3>🎉 Single Choose with other</h3>
+  <p>Other answer</p>
+</li>
 </ol>"
 `;
 
 exports[`should convert value to json 1`] = `
-Object {
+{
   "EF9tbsJj3CNZ": "Choice 3",
   "MVlZfnmjZlye": "🍍 Pineapple",
-  "NteSqF9g5cOa6": Array [
-    Object {
+  "NqCpSqCpteiO": {
+    "filename": "",
+    "url": "https://heyform.net/sig.jpg",
+  },
+  "NteSqF9g5cOa6": [
+    {
       "age": "16",
       "name": "Ivan",
     },
-    Object {
+    {
       "age": "24",
       "name": "Jack Smith",
     },
   ],
+  "Svky0NLxkN7u": "Other answer",
   "X9F47wrnJImk": "No",
   "bcFvi1syrp66": "+12015551023",
-  "g6Oayu81jkdqcte": Object {
+  "g6Oayu81jkdqcte": {
     "firstName": "Ivan",
     "lastName": "Woods",
   },
-  "qCpteNRi2SiO": Object {
+  "qCpteNRi2SiO": {
     "filename": "avatar.jpg",
     "url": "https://heyformhq.com/qCpteNRi2SiO_avatar.jpg",
   },
   "qFN5cteg6SOa": 5,
+  "u1NyLxkSvkN7": "Choice 2, Other answer",
   "vyLu2NkN70xkS": "Group Choice 1, Group Choice 2",
   "yLxkSvkN7u2N": "Choice 2",
 }
@@ -139,6 +166,9 @@ Choice 3
 🈴️ Upload you avatar 
 avatar.jpg (https://heyformhq.com/qCpteNRi2SiO_avatar.jpg)
 
+You sig here
+ (https://heyform.net/sig.jpg)
+
 🪐 Rate here 
 5
 
@@ -147,5 +177,11 @@ Ivan Woods
 
 Input table
 Ivan, 16
-Jack Smith, 24"
+Jack Smith, 24
+
+✈ Multiple Choose with other
+Choice 2, Other answer
+
+🎉 Single Choose with other
+Other answer"
 `;

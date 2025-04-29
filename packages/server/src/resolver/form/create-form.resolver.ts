@@ -33,7 +33,8 @@ export class CreateFormResolver {
         published: true,
         allowArchive: true,
         requirePassword: false,
-        locale: 'en'
+        locale: 'en',
+        enableQuestionList: true
       },
       fields: [
         // Example field
@@ -58,6 +59,7 @@ export class CreateFormResolver {
           kind: FieldKindEnum.THANK_YOU
         }
       ],
+      hiddenFields: [],
       draft: true,
       status: FormStatusEnum.NORMAL,
       ...input

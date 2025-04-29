@@ -6,12 +6,13 @@ import * as rateLimit from 'express-rate-limit'
 import * as helmet from 'helmet'
 import * as serveStatic from 'serve-static'
 
-import { ms } from '@heyform-inc/utils'
+import { helper, ms } from '@heyform-inc/utils'
 
 import { APP_LISTEN_HOSTNAME, APP_LISTEN_PORT, STATIC_DIR, VIEW_DIR } from '@environments'
 import { Logger, hbs } from '@utils'
 
 import { AppModule } from './app.module'
+import { AllExceptionsFilter } from './common/filter'
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -25,6 +26,9 @@ async function bootstrap() {
     })
   )
 
+  // Catch all exceptions
+  app.useGlobalFilters(new AllExceptionsFilter())
+
   // Enable cookie
   app.use(cookieParser())
 
@@ -36,7 +40,14 @@ async function bootstrap() {
     '/static',
     serveStatic(STATIC_DIR, {
       maxAge: '30d',
-      extensions: ['png', 'svg', 'js', 'css']
+      extensions: ['jpg', 'jpeg', 'bmp', 'webp', 'gif', 'png', 'svg', 'js', 'css'],
+      setHeaders: (res, path) => {
+        const { attname } = res.req.query
+
+        if (helper.isValid(attname)) {
+          res.setHeader('Content-Disposition', `attachment; filename="${attname}"`)
+        }
+      }
     })
   )
 

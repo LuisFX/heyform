@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import { FC } from 'react'
-import { useTranslation } from 'react-i18next'
+import { Trans, useTranslation } from 'react-i18next'
 
 import { TimeInput } from '@/components/TimeInput'
 import { Form, Input, Select, Switch } from '@/components/ui'
@@ -17,19 +17,51 @@ export const Basic: FC = observer(() => {
       id="form-settings-basic"
       className="form-settings-selection space-y-6 bg-white px-6 pb-8 pt-6 shadow sm:rounded-md"
     >
-      <div className="text-lg font-medium text-slate-900">Basic</div>
+      <div className="text-lg font-medium text-slate-900">{t('formSettings.Basic')}</div>
 
       {/* Language */}
       <div className="flex items-center justify-between">
         <div className="flex flex-col">
           <div className="text-sm font-medium leading-6 text-slate-900">
-            {t('formSettings.Language')}
+            {t('formSettings.primaryLanguage')}
           </div>
-          <p className="mt-1 text-sm text-slate-500">{t('formSettings.LanguageDescription')}</p>
+          <p className="mt-1 text-sm text-slate-500">{t('formSettings.languageDescription')}</p>
         </div>
 
         <Form.Item className="mb-0 ml-4" name="locale" rules={[{ required: false }]}>
           <Select options={FORM_LOCALES_OPTIONS} popupClassName="locale-select !w-[160px]" />
+        </Form.Item>
+      </div>
+
+      {/* Translations */}
+      <div className="space-y-2">
+        <div>
+          <div className="text-sm font-medium leading-6 text-slate-900">
+            {t('formSettings.languages')}
+          </div>
+          <p className="mt-1 text-sm text-slate-500">
+            <Trans
+              i18nKey="formSettings.translationsDescription"
+              t={t}
+              components={{
+                a: (
+                  <a
+                    href="https://openai.com/chatgpt"
+                    className="text-slate-500 underline hover:text-blue-600"
+                    target="_blank"
+                  />
+                )
+              }}
+            />
+          </p>
+        </div>
+
+        <Form.Item className="mb-0" name="languages" rules={[{ required: false }]}>
+          <Select.Multiple
+            allowSearch={false}
+            options={FORM_LOCALES_OPTIONS}
+            popupClassName="locale-select !w-[160px]"
+          />
         </Form.Item>
       </div>
 
@@ -57,6 +89,20 @@ export const Basic: FC = observer(() => {
         </div>
 
         <Form.Item className="mb-0 ml-4" name="enableProgress" rules={[{ required: false }]}>
+          <Switch />
+        </Form.Item>
+      </div>
+
+      {/* Question list */}
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col">
+          <div className="text-sm font-medium leading-6 text-slate-900">
+            {t('formSettings.questionList')}
+          </div>
+          <p className="mt-1 text-sm text-slate-500">{t('formSettings.questionText')}</p>
+        </div>
+
+        <Form.Item className="mb-0 ml-4" name="enableQuestionList" rules={[{ required: false }]}>
           <Switch />
         </Form.Item>
       </div>
@@ -110,10 +156,10 @@ export const Basic: FC = observer(() => {
                 }
               ]}
             >
-              <Input className="w-32" type="number" trailing="times" />
+              <Input className="w-32" type="number" trailing={t('formSettings.times')} />
             </Form.Item>
 
-            <span className="px-2 text-sm text-slate-500"> in every </span>
+            <span className="px-2 text-sm text-slate-500"> {t('formSettings.inEvery')} </span>
 
             <Form.Item
               className="mb-0"

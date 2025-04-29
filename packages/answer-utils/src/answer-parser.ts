@@ -10,13 +10,16 @@ function fileUpload(answer: Answer, livePreview = false) {
     }
   }
 
-  const filename = helper.isValid(answer.value.filename) ? answer.value.filename : ''
-  const urls = [answer.value.cdnUrlPrefix, answer.value.cdnKey].filter(helper.isValid)
-  const url = urls.length > 0 ? urls.join('/') : ''
+  if (helper.isURL(answer.value)) {
+    return {
+      filename: '',
+      url: answer.value
+    }
+  }
 
   return {
-    filename,
-    url
+    filename: answer.value.filename || '',
+    url: answer.value.url
   }
 }
 
@@ -30,9 +33,9 @@ function singleChoice(answer: Answer): string {
 }
 
 function multipleChoice(answer: Answer): string {
-  return (answer.properties?.choices?.filter(row => answer.value.value.includes(row.id)) || [])
+  return (answer.properties?.choices?.filter(row => answer.value?.value.includes(row.id)) || [])
     .map(row => row.label)
-    .concat([answer.value.other])
+    .concat([answer.value?.other])
     .filter(row => helper.isValid(row))
     .join(', ')
 }

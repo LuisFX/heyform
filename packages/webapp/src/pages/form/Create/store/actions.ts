@@ -1,6 +1,7 @@
 import { htmlUtils } from '@heyform-inc/answer-utils'
 import {
   FieldKindEnum,
+  HiddenField,
   type Logic,
   QUESTION_FIELD_KINDS,
   type Variable
@@ -14,6 +15,7 @@ import { FormService } from '@/service'
 import type {
   AddFieldAction,
   DeleteFieldAction,
+  DeleteHiddenFieldAction,
   DeleteLogicAction,
   DeleteVariableAction,
   DuplicateFieldAction,
@@ -449,5 +451,38 @@ export function setActiveTabName(
   return {
     ...state,
     activeTabName
+  }
+}
+
+export function createHiddenField(state: IState, hiddenField: HiddenField): IState {
+  const hiddenFields = [...(state.hiddenFields || []), hiddenField]
+
+  return {
+    ...state,
+    hiddenFields
+  }
+}
+
+export function editHiddenField(state: IState, hiddenField: HiddenField): IState {
+  const hiddenFields = state.hiddenFields || []
+  const index = hiddenFields.findIndex(h => h.id === hiddenField.id)
+
+  if (index < 0) {
+    return state
+  }
+
+  return {
+    ...state,
+    hiddenFields: hiddenFields.map((h, i) => (i === index ? hiddenField : h))
+  }
+}
+
+export function deleteHiddenField(
+  state: IState,
+  { id }: DeleteHiddenFieldAction['payload']
+): IState {
+  return {
+    ...state,
+    hiddenFields: (state.hiddenFields || []).filter(h => h.id !== id)
   }
 }

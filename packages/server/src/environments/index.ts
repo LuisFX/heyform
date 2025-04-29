@@ -1,9 +1,8 @@
 import * as fs from 'fs'
 import { resolve } from 'path'
 
+import { loadEnv } from '@heyooo-inc/env'
 import { bytes, commonFileMimeTypes, helper, mime, toBool } from '@heyform-inc/utils'
-
-import { loadEnv } from '@utils'
 
 // environment
 export const NODE_ENV: string = process.env.NODE_ENV || 'development'
@@ -17,6 +16,7 @@ export const APP_LISTEN_PORT: number = +process.env.APP_LISTEN_PORT || 8000
 export const APP_LISTEN_HOSTNAME: string = process.env.APP_LISTEN_HOSTNAME || '0.0.0.0'
 export const APP_HOMEPAGE_URL: string =
   process.env.APP_HOMEPAGE_URL || `http://${APP_LISTEN_HOSTNAME}:${APP_LISTEN_PORT}`
+export const APP_DISABLE_REGISTRATION: boolean = helper.isTrue(process.env.APP_DISABLE_REGISTRATION)
 
 // Cookie
 export const COOKIE_MAX_AGE: string = process.env.COOKIE_MAX_AGE || '1y'
@@ -66,6 +66,9 @@ export const SMTP_HOST: string = process.env.SMTP_HOST
 export const SMTP_PORT: number = +process.env.SMTP_PORT
 export const SMTP_USER: string = process.env.SMTP_USER
 export const SMTP_PASSWORD: string = process.env.SMTP_PASSWORD
+export const SMTP_SERVERNAME: string = process.env.SMTP_SERVERNAME || null
+export const SMTP_SECURE: boolean = helper.isTrue(process.env.SMTP_SECURE)
+export const SMTP_IGNORE_CERT: boolean = helper.isTrue(process.env.SMTP_IGNORE_CERT)
 
 // Google recaptcha
 export const GOOGLE_RECAPTCHA_KEY: string = process.env.GOOGLE_RECAPTCHA_KEY
@@ -126,3 +129,16 @@ export const ACCOUNT_DELETION_SCHEDULE_INTERVAL: string =
 
 // Unsplash
 export const UNSPLASH_CLIENT_ID: string = process.env.UNSPLASH_CLIENT_ID
+
+// OpenAI
+export const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL
+export const OPENAI_API_KEY = process.env.OPENAI_API_KEY
+export const OPENAI_GPT_MODEL = process.env.OPENAI_GPT_MODEL || 'gpt-3.5-turbo-0125'
+
+// S3
+export const S3_ENDPOINT = process.env.S3_ENDPOINT
+export const S3_REGION = process.env.S3_REGION
+export const S3_BUCKET = process.env.S3_BUCKET
+export const S3_ACCESS_KEY_ID = process.env.S3_ACCESS_KEY_ID
+export const S3_SECRET_ACCESS_KEY = process.env.S3_SECRET_ACCESS_KEY
+export const S3_PUBLIC_URL = process.env.S3_PUBLIC_URL

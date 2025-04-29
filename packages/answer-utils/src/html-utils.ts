@@ -1,4 +1,4 @@
-import { helper } from '@heyform-inc/utils'
+import { helper, htmlToText } from '@heyform-inc/utils'
 import { parse as html5Parse } from 'html5parser'
 import { IAttribute } from 'html5parser/src/types'
 
@@ -23,13 +23,15 @@ const ALLOWED_TAGS = [
   'u',
   's',
   'mention',
-  'variable'
+  'variable',
+  'hiddenfield'
 ]
 const ALLOWED_ATTRIBUTES = [
   'href',
   'class',
   'data-mention',
   'data-variable',
+  'data-hiddenfield',
   'contenteditable',
   'style'
 ]
@@ -179,6 +181,9 @@ function serialize(schemas?: any[], option?: HTMLWalkOptions): string {
             contenteditable: 'false',
             'data-variable': attributes.id
           }
+        } else if (tag === 'a') {
+          attributes.target = '_blank'
+          attributes.rel = 'noreferrer'
         }
 
         property = Object.keys(attributes!)
@@ -207,15 +212,7 @@ function plain(html: string, limit = 0) {
     return ''
   }
 
-  const result = html
-    .replace(/<style[^<>]*>((?!<\/).)*<\/style>/gi, '')
-    .replace(/<script[^<>]*>((?!<\/).)*<\/script>/gi, '')
-    .replace(/<[^>]+>/g, '')
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&quot;/g, '"')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
+  const result = htmlToText(html, 0)
 
   if (limit > 0) {
     let sliced = result.slice(0, limit)
